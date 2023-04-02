@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snakes and Ladders</title>
+
+    <link rel="stylesheet" type="text/css" href="src/style.css" />
+  </head>
+  <body>
+    <div class="startScreen">
+      <div class="startScreen__content">
+        <h1>Snakes and Ladders</h1>
+
+        <select id="noOfPlayers">
+          <option value="1">1 player</option>
+          <option value="2">2 player</option>
+          <option value="3">3 player</option>
+          <option value="4">4 player</option>
+        </select>
+
+        <button id="start-game">START GAME</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <table id="grid" cellspacing="0">
+        <tbody>
+          <tr>
+            <td id="c25"></td>
+            <td id="c26"></td>
+            <td id="c27" data-snakeEnd="1"></td>
+            <td id="c28"></td>
+            <td id="c29"></td>
+            <td id="c30"></td>
+          </tr>
+          <tr>
+            <td id="c24"></td>
+            <td id="c23"></td>
+            <td id="c22"></td>
+            <td id="c21" data-snakeEnd="9"></td>
+            <td id="c20" data-ladderEnd="29"></td>
+            <td id="c19" data-snakeEnd="7"></td>
+          </tr>
+          <tr>
+            <td id="c13"></td>
+            <td id="c14"></td>
+            <td id="c15"></td>
+            <td id="c16"></td>
+            <td id="c17" data-snakeEnd="4"></td>
+            <td id="c18"></td>
+          </tr>
+          <tr>
+            <td id="c12"></td>
+            <td id="c11" data-ladderEnd="26"></td>
+            <td id="c10"></td>
+            <td id="c9"></td>
+            <td id="c8"></td>
+            <td id="c7"></td>
+          </tr>
+          <tr>
+            <td id="c1"></td>
+            <td id="c2"></td>
+            <td id="c3" data-ladderEnd="22"></td>
+            <td id="c4"></td>
+            <td id="c5" data-ladderEnd="8"></td>
+            <td id="c6"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bottom-bar">
+      <div>
+        <div id="turn-indicator-panel" class="tooltip" data-tooltip="Turn Indication Panel">
+          <div id="player1" class="token"></div>
+          <div id="player2" class="token"></div>
+          <div id="player3" class="token"></div>
+          <div id="player4" class="token"></div>
+        </div>
+        <img src="src/dice/dice6.png" id="dice" class="is-rolled" /> 
+      </div>
+    </div>
+
+    <script type="text/javascript" src="src/script.js"></script>
+  </body>
+</html>
