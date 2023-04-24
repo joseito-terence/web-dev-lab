@@ -2,12 +2,14 @@ import mongoose, { Schema } from 'mongoose'
 
 const todoSchema = new Schema({
   task: {
-    type: String
+    type: String,
+    required: true
   },
   status: {
     type: String,
     enum: ['active', 'completed'],
-    default: 'active'
+    default: 'active',
+    required: false
   }
 }, {
   timestamps: true,
@@ -23,6 +25,7 @@ todoSchema.methods = {
       // simple view
       id: this.id,
       task: this.task,
+      status: this.status,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     }

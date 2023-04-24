@@ -6,7 +6,7 @@ import { schema } from './model'
 export Todo, { schema } from './model'
 
 const router = new Router()
-const { task } = schema.tree
+const { task, status } = schema.tree
 
 /**
  * @api {post} /todos Create todo
@@ -55,7 +55,7 @@ router.get('/:id',
  * @apiError 404 Todo not found.
  */
 router.put('/:id',
-  body({ task }),
+  body({ task, status }),
   update)
 
 /**
