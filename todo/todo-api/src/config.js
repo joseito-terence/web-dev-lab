@@ -38,7 +38,7 @@ const config = {
   test: { },
   development: {
     mongo: {
-      uri: 'mongodb://localhost/todo-api-dev',
+      uri: process.env.MONGODB_URI || 'mongodb://localhost/todo-api-dev',
       options: {
         debug: true
       }
