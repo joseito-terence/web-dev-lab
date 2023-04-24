@@ -65,3 +65,8 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+
+.form-check-input:checked ~ .form-check-label {
+  text-decoration: line-through;
+}

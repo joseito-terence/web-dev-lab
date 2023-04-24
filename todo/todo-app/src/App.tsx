@@ -1,32 +1,28 @@
 import { useMemo, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
-import { Button, FormCheck, FormControl } from 'react-bootstrap';
+import { Button, FormCheck, FormControl, Spinner } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
-
-type TodoType = {
-  id: number,
-  task: string,
-  status: 'active' | 'completed'
-}
+import type { TodoType } from './services'
+import { useTodos, useCreateTodo, useUpdateTodo, useDeleteTodo } from './hooks';
 
 type FilterType = 'all' | TodoType['status']
 
 export default function App() {
   const isMobile = useMediaQuery({ maxWidth: 767 })
-  const [todos, setTodos] = useState<TodoType[]>([
-    { id: 1, task: 'Complete online Javascript course', status: 'completed' },
-    { id: 2, task: 'Jog around the park 3x', status: 'completed' },
-    { id: 3, task: 'Read for 1 hour', status: 'active' },
-    { id: 4, task: 'Pick up groceries', status: 'active' },
-    { id: 5, task: 'Complete Todo App on Frontend Mentor', status: 'active' }
-  ])
+  const query = useTodos()
+  const todos = useMemo(() => query.data?.rows || [], [query])
+  const createMutation = useCreateTodo()
+  const updateMutation = useUpdateTodo()
+  const deleteMutation = useDeleteTodo()
+
   const [task, setTask] = useState('')
   const [filter, setFilter] = useState<FilterType>('all')
 
   const activeCount = useMemo(() => todos.filter(todo => todo.status === 'active').length, [todos])
 
   const clearCompleted = () => {
-    setTodos(_todos => _todos.filter((todo) => todo.status === 'active'))
+    Promise.allSettled(todos.map(todo => deleteMutation.mutateAsync(todo.id)))
+      .then(() => query.refetch())
   }
 
   return (
@@ -44,7 +40,7 @@ export default function App() {
           onChange={e => setTask(e.target.value)}
           onKeyDown={e => {
             if (e.key === 'Enter') {
-              setTodos(_todos => [...todos, { task, status: 'active', id: _todos.length + 1 }])
+              createMutation.mutate(task)
               setTask('')
             }
           }}
@@ -52,6 +48,12 @@ export default function App() {
         />
 
         <div className='w-100 bg-white rounded-2 pt-2 mt-3 shadow-lg'>
+          {query.isLoading &&
+            <div className="d-flex justify-content-center">
+              <Spinner animation="border" variant="primary" />
+            </div>
+          }
+
           {todos
             .filter((todo) => (filter === 'all') ? true : (todo.status === filter))
             .map((todo, idx) => (
@@ -65,17 +67,17 @@ export default function App() {
                   label={todo.task}
                   checked={todo.status === 'completed'}
                   onChange={e => {
-                    setTodos(_todos => _todos.map(_todo => _todo.id === todo.id ? { ..._todo, status: e.target.checked ? 'completed' : 'active' } : _todo))
+                    updateMutation.mutate({ ...todo, status: e.target.checked ? 'completed' : 'active' })
                   }}
                 />
-                <Button variant='default' onClick={() => setTodos(_todos => _todos.filter((_, index) => index !== idx))}>
+                <Button variant='default' onClick={() => deleteMutation.mutate(todo.id)}>
                   <IoMdClose size={24} color="gray" />
                 </Button>
               </div>
             ))
           }
 
-          <div className='d-flex align-items-center justify-content-between p-2' style={{ fontSize: 14 }}>
+          <div className='d-flex align-items-center justify-content-between p-2 ps-3' style={{ fontSize: 14 }}>
             <span style={{ color: 'gray' }}>{activeCount} items left</span>
             {!isMobile &&
               <div>
