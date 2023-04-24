@@ -3,6 +3,11 @@ import mongoose, { Schema } from 'mongoose'
 const todoSchema = new Schema({
   task: {
     type: String
+  },
+  status: {
+    type: String,
+    enum: ['active', 'completed'],
+    default: 'active'
   }
 }, {
   timestamps: true,
