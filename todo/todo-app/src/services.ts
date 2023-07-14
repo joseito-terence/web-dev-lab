@@ -1,7 +1,7 @@
 import ax from 'axios';
 
 const axios = ax.create({
-  baseURL: 'https://web-dev-lab-assignment-5.onrender.com',
+  baseURL: import.meta.env.VITE_BACKEND_URL ?? 'https://web-dev-lab-assignment-5.onrender.com',
 });
 
 export type ResponseType<T> = {

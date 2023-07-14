@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: ./todo-app
+    env_file: ./todo-app/.env
+    ports:
+      - 3000:3000
+    command: yarn dev
+    volumes:
+      - ./todo-app:/app
+
+  backend:
+    build:
+      context: ./todo-api
+    env_file: ./todo-api/.env
+    ports:
+      - 9000:9000
+    command: npx nodemon ./
+    volumes:
+      - ./todo-api:/api
+
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+
+volumes:
+  mongodb:
